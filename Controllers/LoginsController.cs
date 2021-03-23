@@ -14,14 +14,20 @@ namespace NorthwindCore.Controllers
     {
         private northwindContext db = new northwindContext();
 
-        //[HttpGet]
-        //[Route("{id}")]
-        //public Logins GetOneUser(int id) // Haku pääavaimella/yksi rivi , Find-metodi hakee AINA VAIN PÄÄAVAIMELLA YHDEN RIVIN
-        //{
-        //    northwindContext db = new northwindContext();
-        //    Logins user = db.Logins.Find(id);
-        //    return user;
-        //}
+        [HttpGet]
+        [Route("{id}")]
+        public Logins GetOneUser(int id) // Haku pääavaimella/yksi rivi , Find-metodi hakee AINA VAIN PÄÄAVAIMELLA YHDEN RIVIN
+        {
+            try
+            {
+                Logins user = db.Logins.Find(id);
+                return user;
+            }
+            finally
+            {
+                db.Dispose();
+            }
+        }
 
         [HttpGet]
         [Route("")]
@@ -62,6 +68,71 @@ namespace NorthwindCore.Controllers
             catch (Exception e)
             {
                 return BadRequest(e);
+            }
+            finally
+            {
+                db.Dispose();
+            }
+        }
+
+        //put eli käyttäjän päivitys
+        [HttpPut]
+        [Route("{id}")]
+        public ActionResult UpdateLogin(int id, [FromBody] Logins newLogin)
+        {
+            //northwindContext db = new northwindContext();
+            try
+            {
+                Logins oldLogin = db.Logins.Find(id);
+                if (oldLogin != null)
+                {
+                    oldLogin.Username = newLogin.Username;
+                    oldLogin.Password = newLogin.Password;
+                    oldLogin.Firstname = newLogin.Firstname;
+                    oldLogin.Lastname = newLogin.Lastname;
+                    oldLogin.Email = newLogin.Email;
+                    oldLogin.AccesslevelId = newLogin.AccesslevelId;
+                 
+                    db.SaveChanges();
+                    return Ok(newLogin.LoginId);
+                }
+                else
+                {
+                    return NotFound("Käyttäjää ei löydy!");
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest("Käyttäjän tietojen päivittäminen ei onnistunut.");
+            }
+            finally
+            {
+                db.Dispose();
+            }
+        }
+
+        //Yksittäisen käyttäjän poistaminen
+        [HttpDelete]
+        [Route("{id}")]
+        public ActionResult DeleteLogin(int id)
+        {
+            try
+            {
+                Logins login = db.Logins.Find(id);
+                if (login != null)
+                {
+                    db.Logins.Remove(login);
+                    db.SaveChanges();
+                    return Ok("Käyttäjä id:llä " + id + " poistettiin");
+                }
+                else
+                {
+                    return NotFound("Käyttäjää id:llä" + id + " ei löydy");
+                }
+            }
+            catch
+            {
+                return BadRequest();
             }
             finally
             {
