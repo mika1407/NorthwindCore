@@ -444,7 +444,9 @@ namespace NorthwindCore.Models
 
             modelBuilder.Entity<Logins>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.LoginId);
+
+                entity.Property(e => e.LoginId).HasColumnName("LoginID");
 
                 entity.Property(e => e.AccesslevelId).HasColumnName("AccesslevelID");
 
@@ -459,8 +461,6 @@ namespace NorthwindCore.Models
                 entity.Property(e => e.Lastname)
                     .IsRequired()
                     .HasMaxLength(50);
-
-                entity.Property(e => e.LoginId).HasColumnName("LoginID");
 
                 entity.Property(e => e.Password)
                     .IsRequired()

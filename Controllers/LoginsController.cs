@@ -55,15 +55,15 @@ namespace NorthwindCore.Controllers
         // Uuden luonti
         [HttpPost]
         [Route("")]
-        public ActionResult CreateNewUser([FromBody] Logins user)
+        public ActionResult CreateNewLogin([FromBody] Logins login)
         {
             northwindContext db = new northwindContext();
             try
             {
 
-                db.Logins.Add(user);
+                db.Logins.Add(login);
                 db.SaveChanges();
-                return Ok(user.LoginId);
+                return Ok(login.LoginId);
             }
             catch (Exception e)
             {

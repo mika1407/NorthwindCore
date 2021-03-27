@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace NorthwindCore.Controllers
 {
 
-  // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]   //vaatii kirjautumisen
     [Route("nw/[controller]")]
     [ApiController]
     public class CustomersController : ControllerBase
