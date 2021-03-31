@@ -5,12 +5,15 @@ using System.Threading.Tasks;
 using NorthwindCore.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 // ---------- PRODUCTS --------------
 
 namespace CoreApiHarj.Controllers
 {
     // Koko taulun sisältö
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("nw/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
@@ -36,7 +39,7 @@ namespace CoreApiHarj.Controllers
             }
         }
 
-
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet]
         [Route("")]
         public List<Products> GetAllProducts()
@@ -54,6 +57,7 @@ namespace CoreApiHarj.Controllers
         }
 
         // Haku id:llä
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet]
         [Route("{id}")]
         public Products GetOneProduct(int id)
@@ -105,6 +109,7 @@ namespace CoreApiHarj.Controllers
 
 
         // Uuden luonti
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost]
         [Route("")]
         public ActionResult CreateNewProduct([FromBody] Products product)
@@ -143,6 +148,7 @@ namespace CoreApiHarj.Controllers
                     oldProd.SupplierId = newProd.SupplierId;
                     oldProd.CategoryId = newProd.CategoryId;
                     oldProd.QuantityPerUnit = newProd.QuantityPerUnit;
+                    oldProd.UnitPrice = newProd.UnitPrice;
                     oldProd.UnitsInStock = newProd.UnitsInStock;
                     oldProd.UnitsOnOrder = newProd.UnitsOnOrder;
                     oldProd.ReorderLevel = newProd.ReorderLevel;
