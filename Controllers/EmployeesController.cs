@@ -5,17 +5,22 @@ using System.Threading.Tasks;
 using NorthwindCore.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 // ---------- EMPLOYEES --------------
 
 namespace NorthwindCore.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("nw/[controller]")]
     [ApiController]
     public class EmployeesController : ControllerBase
     {
 
         //Get all Employees -puhdas listaversio-
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet]
         [Route("")]
         public List<Employees> GetAllEmp()
@@ -23,31 +28,32 @@ namespace NorthwindCore.Controllers
             northwindContext db = new northwindContext();
             try {
                 List<Employees> emp = db.Employees.ToList();
+                //var emp = db.Employees.AsNoTracking().ToList();
                 return emp;
             }
             finally
             {
                 db.Dispose();
             }
-        } 
+        }
 
 
-        /* GET ALL -  ACTIONRESULT VERSIO
-        public ActionResult GetAllEmployees()
-        {
+        //GET ALL -  ACTIONRESULT VERSIO
+        //public ActionResult GetAllEmployees()
+        //{
 
-            northwindContext db = new northwindContext();
-            List<Employees> emp = db.Employees.ToList();
+        //    northwindContext db = new northwindContext();
+        //    List<Employees> emp = db.Employees.ToList();
 
-            if (emp != null)
-            {
-                return Ok(emp);
-            }
-            else
-            {
-                return NotFound("Sorry, nothing to show.");
-            }
-        }*/
+        //    if (emp != null)
+        //    {
+        //        return Ok(emp);
+        //    }
+        //    else
+        //    {
+        //        return NotFound("Sorry, nothing to show.");
+        //    }
+        //}
 
         // Haku id:llä
         [HttpGet]
@@ -86,6 +92,7 @@ namespace NorthwindCore.Controllers
         }
 
         // Uuden luonti
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost]
         [Route("")]
         public ActionResult CreateNewEmployee([FromBody] Employees Employee)
@@ -98,9 +105,9 @@ namespace NorthwindCore.Controllers
                 db.SaveChanges();
                 return Ok(Employee.EmployeeId);
             }
-            catch
+            catch (Exception e)
             {
-                return BadRequest("Adding Employee failed");
+                return BadRequest("Adding Employee failed" + e);
             }
             finally
             {
