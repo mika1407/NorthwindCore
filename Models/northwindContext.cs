@@ -53,7 +53,8 @@ namespace NorthwindCore.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-EH0NLLO\\SQLEXPRESS;Database=northwind;Trusted_Connection=True;");
+                //optionsBuilder.UseSqlServer("Server=DESKTOP-EH0NLLO\\SQLEXPRESS;Database=northwind;Trusted_Connection=True;");
+                 optionsBuilder.UseSqlServer("Server=tcp:nwsrv.database.windows.net,1433;Initial Catalog=northwind;Persist Security Info=False;User ID=nwsrvAdmin;Password=Kukkakauppa5;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
 

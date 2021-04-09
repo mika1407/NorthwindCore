@@ -139,8 +139,8 @@ namespace NorthwindCore.Controllers
                     oldEmp.PostalCode = newEmp.PostalCode;
                     oldEmp.Country = newEmp.Country;
                     oldEmp.HomePhone = newEmp.HomePhone;
-                    oldEmp.Extension = newEmp.Extension;
-                    oldEmp.Notes = newEmp.Notes;
+                    //oldEmp.Extension = newEmp.Extension;
+                    //oldEmp.Notes = newEmp.Notes;
                     
                     db.SaveChanges();
                     return Ok(newEmp.EmployeeId);
